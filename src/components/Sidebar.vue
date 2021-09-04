@@ -123,7 +123,7 @@ export default {
         });
 
         const store = useStore();
-        const collapse = computed(() => store.state.collapse);
+        const collapse = computed(() => store.state.lodVuex.collapse);
 
         return {
             items,

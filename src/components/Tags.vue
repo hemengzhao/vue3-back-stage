@@ -38,7 +38,7 @@ export default {
         };
 
         const store = useStore();
-        const tagsList = computed(() => store.state.tagsList);
+        const tagsList = computed(() => store.state.lodVuex.tagsList);
         const showTags = computed(() => tagsList.value.length > 0);
 
         // 关闭单个标签
