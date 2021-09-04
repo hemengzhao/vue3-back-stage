@@ -1,0 +1,40 @@
+<template>
+  <div class="about">
+      <v-header />
+      <v-sidebar />
+      <div class="content-box" :class="{ 'content-collapse': collapse }">
+          <v-tags></v-tags>
+          <div class="content">
+              <router-view v-slot="{ Component }">
+                  <transition name="move" mode="out-in">
+                      <keep-alive :include="tagsList">
+                          <component :is="Component" />
+                      </keep-alive>
+                  </transition>
+              </router-view>
+              <!-- <el-backtop target=".content"></el-backtop> -->
+          </div>
+      </div>
+  </div>
+</template>
+
+<script lang="ts">
+import { Options, Vue } from 'vue-class-component';
+
+import HelloWorld from '@/components/HelloWorld.vue'; // @ is an alias to /src
+import vHeader from "../components/Header.vue";
+import vSidebar from "../components/Sidebar.vue";
+import vTags from "../components/Tags.vue";
+@Options({
+  components: {
+    HelloWorld,
+    vHeader,
+    vSidebar,
+    vTags
+  },
+
+})
+export default class Home extends Vue {
+
+}
+</script>
