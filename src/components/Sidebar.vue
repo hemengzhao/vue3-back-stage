@@ -2,28 +2,28 @@
     <div class="sidebar">
         <el-menu class="sidebar-el-menu" :default-active="onRoutes" :collapse="collapse" background-color="#324157"
             text-color="#bfcbd9" active-text-color="#20a0ff" unique-opened router>
-            <template v-for="item in items">
-                <template v-if="item.subs">
-                    <el-sub-menu :index="item.index" :key="item.index">
+            <template v-for="item in sidebarRouter">
+                <template v-if="item.children">
+                    <el-sub-menu :index="item.path" :key="item.path">
                         <template #title>
-                            <i :class="item.icon"></i>
-                            <span>{{ item.title }}</span>
+                            <i :class="item.meta.icon"></i>
+                            <span>{{ item.meta.title }}</span>
                         </template>
-                        <template v-for='subItem in item.subs'>
-                            <el-sub-menu v-if="subItem.subs" :index="subItem.index" :key="subItem.index">
-                                <template #title>{{ subItem.title }}</template>
-                                <el-menu-item v-for="(threeItem, i) in subItem.subs" :key="i" :index="threeItem.index">
-                                    {{ threeItem.title }}</el-menu-item>
+                        <template v-for='subItem in item.children'>
+                            <el-sub-menu v-if="subItem.children" :index="subItem.path" :key="subItem.path">
+                                <template #title>{{ subItem.meta.title }}</template>
+                                <el-menu-item v-for="(threeItem, i) in subItem.children" :key="i" :index="threeItem.path">
+                                    {{ threeItem.meta.title }}</el-menu-item>
                             </el-sub-menu>
-                            <el-menu-item v-else :index="subItem.index" :key="subItem.index">{{ subItem.title }}</el-menu-item>
+                            <el-menu-item v-else :index="subItem.path" :key="subItem.path">{{ subItem.meta.title }}</el-menu-item>
                         </template>
                     </el-sub-menu>
 
                 </template>
                 <template v-else>
-                    <el-menu-item :index="item.index" :key="item.index">
-                        <i :class="item.icon"></i>
-                        <template #title>{{ item.title }}</template>
+                    <el-menu-item :index="item.path" :key="item.path">
+                        <i :class="item.meta.icon"></i>
+                        <template #title>{{ item.meta.title }}</template>
                     </el-menu-item>
                 </template>
             </template>
@@ -37,85 +37,7 @@ import { useStore } from "vuex";
 import { useRoute } from "vue-router";
 export default {
     setup() {
-        const items = [
-            {
-      
-                icon: "el-icon-house",
-                index: "/dashboard",
-                title: "系统首页",
-            },
-            {
-                icon: "el-icon-document", 
-                index: "/table",
-                title: "基础表格",
-            },
-            {
-                icon: "el-icon-document-copy",
-                index: "/tabs",
-                title: "tab选项卡",
-            },
-            {
-                icon: "el-icon-tickets",
-                index: "3",
-                title: "表单相关",
-                subs: [
-                    {
-                        index: "/form",
-                        title: "基本表单",
-                    },
-                    {
-                        index: "/upload",
-                        title: "文件上传",
-                    },
-                    // {
-                    //     index: "4",
-                    //     title: "三级菜单",
-                    //     subs: [
-                    //         {
-                    //             index: "/editor",
-                    //             title: "富文本编辑器",
-                    //         },
-                    //     ],
-                    // },
-                ],
-            },
-            {
-                icon: "el-icon-eleme",
-                index: "/icon",
-                title: "自定义图标",
-            },
-            {
-                icon: "el-icon-pie-chart",
-                index: "/charts",
-                title: "schart图表",
-            },
-            {
-                icon: "el-icon-orange",
-                index: "/i18n",
-                title: "国际化功能",
-            },
-            {
-                icon: "el-icon-warning",
-                index: "7",
-                title: "错误处理",
-                subs: [
-                    {
-                        index: "/permission",
-                        title: "权限测试",
-                    },
-                    {
-                        index: "/404",
-                        title: "404页面",
-                    },
-                ],
-            },
-            {
-                icon: "el-icon-sunrise",
-                index: "/donate",
-                title: "支持作者",
-            },
-        ];
-
+       
         const route = useRoute();
 
         const onRoutes = computed(() => {
@@ -124,9 +46,10 @@ export default {
 
         const store = useStore();
         const collapse = computed(() => store.state.lodVuex.collapse);
-
+        const sidebarRouter = computed(() => store.state.router.sidebarRouter);
+        
         return {
-            items,
+            sidebarRouter,
             onRoutes,
             collapse,
         };

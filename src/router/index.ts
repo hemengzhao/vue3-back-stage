@@ -1,9 +1,10 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import Home from '../views/Home.vue'
 import Login from "../views/Login/index.vue"
+
 const routes: Array<RouteRecordRaw> = [
   {
-      path: '/',
+    path: '/',
       redirect: '/dashboard'
   },
   {
@@ -11,14 +12,27 @@ const routes: Array<RouteRecordRaw> = [
     name: 'Login',
     meta: {
       title: '登录',
-      icon: ''
-  },
+        icon: '',
+    },
     component: Login
+  },
+  {
+    path: '/403',
+    name: '403',
+    meta: {
+        title: '没有权限',
+        isLeaf: false,
+    },
+    component: () => import (/* webpackChunkName: "403" */ '../views/oldPage/403.vue')
   },
   {
     path: '/',
     name: 'Home',
     component: Home,
+    meta: {
+        title: '',
+        isLeaf: true,
+    },
     children: [
       {
           path: "/dashboard",
@@ -26,6 +40,7 @@ const routes: Array<RouteRecordRaw> = [
           meta: {
               title: '系统首页',
               icon: "el-icon-house",
+              isLeaf: true,
           },
           component: () => import ( /* webpackChunkName: "dashboard" */ "../views/oldPage/Dashboard.vue")
       }, {
@@ -34,100 +49,125 @@ const routes: Array<RouteRecordRaw> = [
           meta: {
               title: '基础表格',
               icon: "el-icon-document", 
+              isLeaf: true,
           },
           component: () => import ( /* webpackChunkName: "table" */ "../views/oldPage/BaseTable.vue")
-      }, {
-          path: "/charts",
-          name: "basecharts",
-          meta: {
-              title: 'schart图表',
-              icon: "el-icon-pie-chart",
-          },
-          component: () => import ( /* webpackChunkName: "charts" */ "../views/oldPage/BaseCharts.vue")
-      }, {
-          path: "/form",
-          name: "baseform",
-          meta: {
-              title: '表单相关',
-              icon: "el-icon-tickets",
-          },
-          component: () => import ( /* webpackChunkName: "form" */ "../views/oldPage/BaseForm.vue")
       }, {
           path: "/tabs",
           name: "tabs",
           meta: {
               title: 'tab选项卡',
               icon: "el-icon-document-copy",
+              isLeaf: true,
           },
           component: () => import ( /* webpackChunkName: "tabs" */ "../views/oldPage/Tabs.vue")
       }, {
-          path: "/donate",
-          name: "donate",
-          meta: {
-              title: '鼓励作者'
-          },
-          component: () => import ( /* webpackChunkName: "donate" */ "../views/oldPage/Donate.vue")
+        path: "/form",
+        name: "baseform",
+        meta: {
+            title: '表单相关',
+            icon: "el-icon-tickets",
+            isLeaf: true,
+        },
+        component: () => import ( /* webpackChunkName: "form" */ "../views/oldPage/FromLay.vue"),
+        children: [
+          {
+            path: "baseform",
+            name: "baseform",
+            meta: {
+                title: '基础表单',
+                icon: "el-icon-tickets",
+                isLeaf: true,
+            },
+            component: () => import ( /* webpackChunkName: "form" */ "../views/oldPage/BaseForm.vue"),
+            
+          }, {
+              path: "upload",
+              name: "upload",
+              meta: {
+                  title: '文件上传',
+                  isLeaf: true,
+              },
+              component: () => import ( /* webpackChunkName: "upload" */ "../views/oldPage/Upload.vue")
+          }
+
+        ]
       }, {
-          path: "/permission",
-          name: "permission",
+          path: "/charts",
+          name: "basecharts",
           meta: {
-              title: '权限管理',
-              permission: true
+              title: 'schart图表',
+              icon: "el-icon-pie-chart",
+              isLeaf: true,
           },
-          component: () => import ( /* webpackChunkName: "permission" */ "../views/oldPage/Permission.vue")
-      }, {
-          path: "/i18n",
-          name: "i18n",
-          meta: {
-              title: '国际化语言'
-          },
-          component: () => import ( /* webpackChunkName: "i18n" */ "../views/oldPage/I18n.vue")
-      }, {
-          path: "/upload",
-          name: "upload",
-          meta: {
-              title: '上传插件'
-          },
-          component: () => import ( /* webpackChunkName: "upload" */ "../views/oldPage/Upload.vue")
+          component: () => import ( /* webpackChunkName: "charts" */ "../views/oldPage/BaseCharts.vue")
       }, {
           path: "/icon",
           name: "icon",
           meta: {
-              title: '自定义图标'
+              title: '自定义图标',
+              isLeaf: true,
+              icon: "el-icon-eleme",
           },
           component: () => import ( /* webpackChunkName: "icon" */ "../views/oldPage/Icon.vue")
       }, {
-          path: '/404',
-          name: '404',
+          path: "/i18n",
+          name: "i18n",
           meta: {
-              title: '找不到页面'
+              title: '国际化语言',
+              isLeaf: true,
+              icon: "el-icon-orange",
           },
-          component: () => import (/* webpackChunkName: "404" */ '../views/oldPage/404.vue')
+          component: () => import ( /* webpackChunkName: "i18n" */ "../views/oldPage/I18n.vue")
       }, {
-          path: '/403',
-          name: '403',
+          path: "/donate",
+          name: "donate",
           meta: {
-              title: '没有权限'
+              title: '鼓励作者',
+              isLeaf: true,
+              icon: "el-icon-sunrise",
           },
-          component: () => import (/* webpackChunkName: "403" */ '../views/oldPage/403.vue')
+          component: () => import ( /* webpackChunkName: "donate" */ "../views/oldPage/Donate.vue")
       }, {
+          path: "/error",
+          name: "error",
+          meta: {
+              title: '权限管理',
+              isLeaf: true,
+              icon: "el-icon-warning",
+          },
+          component: () => import ( /* webpackChunkName: "permission" */ "../views/oldPage/ErrorLay.vue"),
+          children: [
+            {
+                path: "permission",
+                name: "permission",
+                meta: {
+                    title: '权限测试',
+                    isLeaf: true
+                },
+                component: () => import ( /* webpackChunkName: "permission" */ "../views/oldPage/Permission.vue")
+            }, {
+                  path: '404',
+                  name: '404',
+                  meta: {
+                      title: '找不到页面',
+                      isLeaf: true,
+                  },
+                  component: () => import (/* webpackChunkName: "404" */ '../views/oldPage/404.vue')
+              },
+          ]
+        }, {
           path: '/user',
           name: 'user',
           meta: {
-              title: '个人中心'
+              title: '个人中心',
+              isLeaf: false,
           },
           component: () => import (/* webpackChunkName: "user" */ '../views/oldPage/User.vue')
-      }
-  ]
+        }
+    ]
   },
-  {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  }
+  
 ]
 
 const router = createRouter({
