@@ -5,7 +5,7 @@
                 <el-breadcrumb-item><i class="el-icon-lx-copy"></i> tab选项卡</el-breadcrumb-item>
             </el-breadcrumb>
         </div>
-        <div class="container">
+        <div class="container" ref='container'>
             <el-tabs v-model="message">
                 <el-tab-pane :label="`未读消息(${state.unread.length})`" name="first">
                     <el-table :data="state.unread" :show-header="false" style="width: 100%">
@@ -23,6 +23,8 @@
                     </el-table>
                     <div class="handle-row">
                         <el-button type="primary">全部标为已读</el-button>
+                        <el-button type="primary" @click="toggleFullscreen">全屏显示</el-button>
+                        
                     </div>
                 </el-tab-pane>
                 <el-tab-pane :label="`已读消息(${state.read.length})`" name="second">
@@ -72,6 +74,7 @@
 
 <script>
 import { ref, reactive } from "vue";
+import screenfull from "screenfull";
 export default {
     name: "tabs",
     setup() {
@@ -114,13 +117,21 @@ export default {
             const item = state.recycle.splice(index, 1);
             state.read = item.concat(state.read);
         };
+        const container = ref(null)
+        const toggleFullscreen = () => {
+            if(screenfull.isEnabled){
+                screenfull.toggle(container.value) //传入参数 this.refs.dom 指定dom进入全屏
 
+            }
+        }
         return {
             message,
+            container,
             state,
             handleRead,
             handleDel,
             handleRestore,
+            toggleFullscreen
         };
     },
 };

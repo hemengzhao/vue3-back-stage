@@ -8,6 +8,12 @@
         <div class="logo">后台管理系统</div>
         <div class="header-right">
             <div class="header-user-con">
+                <!-- 全屏 -->
+                <div class="btn-bell">
+                 
+                    <i class="el-icon-rank" @click="toggleFullscreen" style="transform:rotate(45deg)"></i>
+                </div>
+
                 <!-- 消息中心 -->
                 <div class="btn-bell">
                     <el-tooltip effect="dark" :content="message?`有${message}条未读消息`:`消息中心`" placement="bottom">
@@ -45,6 +51,7 @@
 import { computed, onMounted } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
+import screenfull from "screenfull";
 export default {
     setup() {
         const username = localStorage.getItem("ms_username");
@@ -74,12 +81,19 @@ export default {
             }
         };
 
+        const toggleFullscreen = () => {
+            if(screenfull.isEnabled){
+                screenfull.toggle() //传入参数 this.refs.dom 指定dom进入全屏
+
+            }
+        }
         return {
             username,
             message,
             collapse,
             collapseChage,
             handleCommand,
+            toggleFullscreen
         };
     },
 };
@@ -136,6 +150,7 @@ export default {
     border-radius: 4px;
     background: #f56c6c;
     color: #fff;
+   
 }
 .btn-bell .el-icon-bell {
     color: #fff;
