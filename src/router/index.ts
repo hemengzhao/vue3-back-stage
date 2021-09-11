@@ -53,6 +53,15 @@ const routes: Array<RouteRecordRaw> = [
           },
           component: () => import ( /* webpackChunkName: "table" */ "../views/oldPage/BaseTable.vue")
       }, {
+            path: "/ppt",
+            name: "PPT",
+            meta: {
+                title: 'PPT制作',
+                icon: "el-icon-document", 
+                isLeaf: true,
+            },
+            component: () => import ( /* webpackChunkName: "table" */ "../views/PPTist/index.vue")
+        }, {
           path: "/tabs",
           name: "tabs",
           meta: {

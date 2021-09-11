@@ -23,6 +23,11 @@
                     </el-tooltip>
                     <span class="btn-bell-badge" v-if="message"></span>
                 </div>
+
+                 <!-- 设置 -->
+                <div class="btn-bell">
+                    <i class="el-icon-setting" @click="setGlobal" style="transform:rotate(45deg)"></i>
+                </div>
                 <!-- 用户头像 -->
                 <div class="user-avator">
                     <img src="@/assets/img/img.jpg" />
@@ -46,9 +51,19 @@
             </div>
         </div>
     </div>
+    <el-drawer
+        title="项目配置"
+        v-model="drawerType"
+        direction="rtl"
+        destroy-on-close
+        :size='300'
+        custom-class='setGlobal'
+        >
+        <span>我来啦!</span>
+    </el-drawer>
 </template>
 <script>
-import { computed, onMounted } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import screenfull from "screenfull";
@@ -56,14 +71,14 @@ export default {
     setup() {
         const username = localStorage.getItem("ms_username");
         const message = 2;
-
+        const drawerType = ref(false);
         const store = useStore();
         const collapse = computed(() => store.state.lodVuex.collapse);
         // 侧边栏折叠
         const collapseChage = () => {
             store.commit("handleCollapse", !collapse.value);
         };
-
+        
         onMounted(() => {
             if (document.body.clientWidth < 1500) {
                 collapseChage();
@@ -87,13 +102,18 @@ export default {
 
             }
         }
+        const setGlobal = () => {
+            drawerType.value = true;
+        }
         return {
             username,
             message,
             collapse,
+            drawerType,
             collapseChage,
             handleCommand,
-            toggleFullscreen
+            toggleFullscreen,
+            setGlobal
         };
     },
 };
@@ -173,5 +193,11 @@ export default {
 }
 .el-dropdown-menu__item {
     text-align: center;
+}
+::v-deep.el-drawer{
+    background: red;
+}
+::v-deep.el-drawer__header{
+    margin-bottom: 0;
 }
 </style>
